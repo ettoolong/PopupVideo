@@ -1,2 +1,2 @@
-# PopupVideo
-Firefox add-on, popup Youtube video to standalone window.
+#popup video
+Popup Youtube/Twitch video to standalone window.

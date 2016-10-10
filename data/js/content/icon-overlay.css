@@ -1,0 +1,48 @@
+/*
+ source code from another project:
+ https://github.com/meandavejustice/min-vid
+ https://github.com/meandavejustice/min-vid/blob/master/data/icon-overlay.css - commit[0b94ede]
+*/
+
+.popupvideo__overlay__container {
+    align-items: center;
+    background-color: rgba(255,255,255,0);
+    border-radius: 0 0 0 4px;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    right: 0%;
+    max-height: 34px;
+    max-width: 36px;
+    padding: 2px 2px 4px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 999999;
+}
+
+.popupvideo__overlay__container:hover {
+    background: rgba(255,255,255,0.9);
+}
+
+.popupvideo__overlay__icon {
+    background: url('../../img/icon.svg') no-repeat;
+    background-position: center bottom;
+    background-size: 32px auto;
+    cursor: pointer;
+    height: 100%;
+    opacity: 0;
+    width: 100%;
+}
+
+.popupvideo__overlay__wrapper:hover .popupvideo__overlay__container {
+    background-color: rgba(255, 255, 255, .8);
+}
+
+.popupvideo__overlay__wrapper:hover .popupvideo__overlay__icon {
+    opacity: .8;
+}
+
+.popupvideo__overlay__container:hover .popupvideo__overlay__icon {
+    opacity: 1;
+}
