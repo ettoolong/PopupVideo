@@ -17,7 +17,10 @@ module.exports = function (str) {
   var type;
 
   if (/youtube|youtu\.be/.test(str)) {
-    id = youtube(str);
+    //id = youtube(str);
+    let {vId, vType} = youtube(str);
+    id = vId;
+	  type = vType;
     domain = 'youtube';
   } else if (/vimeo/.test(str)) {
     id = vimeo(str);
@@ -25,9 +28,9 @@ module.exports = function (str) {
   // } else if (/vine/.test(str)) {
   // 	id = vine(str);
   } else if (/twitch/.test(str)) {
-	let {vId, vType} = twitch(str);
+	  let {vId, vType} = twitch(str);
     id = vId;
-	type = vType;
+	  type = vType;
     domain = 'twitch';
   }
   return {id, domain, type};
@@ -39,12 +42,12 @@ module.exports = function (str) {
  * @returns {string|undefined, string}
  */
 function twitch(str) {
-  const vodTester = /https:\/\/www\.twitch\.tv\/[0-9a-zA-Z_]{1,25}\/v\/([0-9]{1,10})/g;
+  const vodTester = /https:\/\/(?:www\.)twitch\.tv\/[0-9a-zA-Z_]{1,25}\/v\/([0-9]{1,10})/g;
   if (vodTester.test(str)) {
     return {vId: str.split(vodTester)[1].split('&')[0], vType: 'vod'};
   }
 
-  const liveTester = /https:\/\/www\.twitch\.tv\//g
+  const liveTester = /https:\/\/(?:www\.)twitch\.tv\//g
   if (liveTester.test(str)) {
     return {vId: str.split(liveTester)[1].split('&')[0], vType: 'live'};
   }
@@ -91,7 +94,7 @@ function youtube(str) {
 
   if (shortcode.test(str)) {
     var shortcodeid = str.split(shortcode)[1];
-    return stripParameters(shortcodeid);
+    return {vId: stripParameters(shortcodeid), vType: 'video'};
   }
 
   // /v/ or /vi/
@@ -99,15 +102,24 @@ function youtube(str) {
 
   if (inlinev.test(str)) {
     var inlineid = str.split(inlinev)[1];
-    return stripParameters(inlineid);
+    return {vId: stripParameters(inlineid), vType: 'video'};
   }
+
+  // list=
+  var parameterl = /list=/g;
 
   // v= or vi=
   var parameterv = /v=|vi=/g;
 
+  if (parameterl.test(str)) {
+    var arr = str.split(parameterl);
+    var arr2 = str.split(parameterv);
+    return {vId: arr2[1].split('&')[0] + '&' + arr[1].split('&')[0], vType: 'list'};
+  }
+
   if (parameterv.test(str)) {
     var arr = str.split(parameterv);
-    return arr[1].split('&')[0];
+    return {vId: arr[1].split('&')[0], vType: 'video'};
   }
 
   // embed
@@ -115,7 +127,7 @@ function youtube(str) {
 
   if (embedreg.test(str)) {
     var embedid = str.split(embedreg)[1];
-    return stripParameters(embedid);
+    return {vId: stripParameters(embedid), vType: 'video'};
   }
 
   // user
@@ -123,7 +135,7 @@ function youtube(str) {
 
   if (userreg.test(str)) {
     var elements = str.split('/');
-    return stripParameters(elements.pop());
+    return {vId: stripParameters(elements.pop()), vType: 'video'};
   }
 }
 

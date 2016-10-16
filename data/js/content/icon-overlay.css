@@ -43,6 +43,14 @@
     opacity: .8;
 }
 
+.popupvideo__overlay__container__hide {
+    opacity: 0;
+}
+
+.popupvideo__overlay__container__hide:hover {
+    opacity: 1;
+}
+
 .popupvideo__overlay__container:hover .popupvideo__overlay__icon {
     opacity: 1;
 }

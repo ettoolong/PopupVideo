@@ -24,17 +24,39 @@ const sizeMapping = [
   {width: 960, height:745},
   {width: 280, height:160},
   {width: 560, height:320},
-  {width: 640, height:365},
-  {width: 853, height:485},
-  {width: 1280, height:725}
+  {width: 640, height:360},
+  {width: 853, height:480},
+  {width: 1280, height:745}
 ];
+
+/*
+  NOTE:
+    [test on Firefox 49]
+    openDialog features bug -> alwaysraised:
+      Windows 10 - Right behavior
+      Mac 10.12 - Not working, window not be set to top
+      Ubuntu 16.04 - Not working, window always set to top
+
+    openDialog features bug -> resizable:
+      Windows 10 - Right behavior
+      Mac 10.12 - Right behavior
+      Ubuntu 16.04 - Not working, window always resizable
+
+    openDialog -> open two windows with the same name:
+      Windows 10- Right behavior, open two windows
+      Mac 10.12 - Wrong behavior, the second window replace the first window
+      Ubuntu 16.04 - Right behavior, open two windows
+*/
 
 module.exports = function (url, topWindow) {
   //console.log('url = ' + url);
   let defaultSize = pref.get(prefPath + "defaultSize");
   let resizable = pref.get(prefPath + "resizable");
   let alwaysTop = pref.get(prefPath + "alwaysTop");
+  let multiWindow = pref.get(prefPath + "multiWindow");
   let name = alwaysTop ? "popupVideoWindow-alwaysTop" : "popupVideoWindow";
+  name += "-" + Date.now() + "-" + Math.floor((Math.random() * 1000)); //let all windows get differen name.
+  let win;
 
   let {id, domain, type} = getVideoId(url);
   //({changed: 'activate', domain: 'vimeo.com'});
@@ -48,18 +70,36 @@ module.exports = function (url, topWindow) {
       centerscreen: true,
       private: true
     };
+
     if(resizable)
       features.resizable = true;
 
-    let win = winUtils.openDialog({
-      name: name,
-      url: videoUrl,
-      features: Object.keys(features).join() + ",width=" + sizeMapping[defaultSize].width+ ",height=" + sizeMapping[defaultSize].height
-    });
+    if(!multiWindow) { //if not allow multi video window, find one opened window to play video
+      let winRegex = /popupVideoWindow(-alwaysTop)?-[0-9]+-[0-9]+/;
+      let allWindows = winUtils.windows(null, {includePrivate:true});
+      for (let chromeWindow of allWindows) {
+        if(!winUtils.isBrowser(chromeWindow)) {
+          if(winRegex.test(chromeWindow.name)) {
+            win = chromeWindow;
+          }
+        }
+      }
+    }
+
+    if(!win) {
+      win = winUtils.openDialog({
+        name: name,
+        url: videoUrl,
+        features: Object.keys(features).join() + ",width=" + sizeMapping[defaultSize].width+ ",height=" + sizeMapping[defaultSize].height
+      });
+    } else {
+      win.location.href = videoUrl; //if not specify url, assign url here.
+    }
 
     if(alwaysTop) {
       topWindow.makeOnTop(win, true);
     }
+
     //console.log(win);
     //let xulWin = winUtils.getXULWindow(win);
     //win.location.href = ''; //if not specify url, assign url here.

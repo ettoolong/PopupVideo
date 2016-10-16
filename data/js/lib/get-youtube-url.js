@@ -4,7 +4,7 @@ const qs = require("sdk/querystring");
 module.exports = getYouTubeUrl;
 
 function getYouTubeUrl(videoId, type, cb, time) {
-  const params = qs.stringify({
+  let params = qs.stringify({
     autoplay: time ? 1 : 0,
     modestbranding: 1,
     controls: 1,
@@ -17,6 +17,10 @@ function getYouTubeUrl(videoId, type, cb, time) {
     showinfo: 0,
     start: parseInt(time, 10) || 0
   });
-
+  if(type === "list") {
+    let p = videoId.split("&");
+    params += "&list=" + p[1];
+    videoId = p[0];
+  }
   cb(null, `${baseURL}/${videoId}/?${params}`);
 }

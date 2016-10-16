@@ -1,7 +1,7 @@
 {
   "title": "popup video",
   "name": "popup-video",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Popup Youtube video to standalone window.",
   "main": "data/js/addon-script.js",
   "author": "ettoolong@hotmail.com",
@@ -61,5 +61,12 @@
     "title": "Always top",
     "value": true,
     "description": "Set popup window always top."
+  },
+  {
+    "name": "multiWindow",
+    "type": "bool",
+    "title": "Use multi window",
+    "value": true,
+    "description": "Allow popup multi video window."
   }]
 }

@@ -60,18 +60,41 @@ require("sdk/simple-prefs").on("", function(prefName){
   if(prefName === "alwaysTop") {
     let alwaysTop = pref.get(prefPath + prefName);
     let allWindows = winUtils.windows(null, {includePrivate:true});
+    let topWin = /popupVideoWindow-alwaysTop-[0-9]+-[0-9]+/;
+    let normalWin = /popupVideoWindow-[0-9]+-[0-9]+/;
     for (let chromeWindow of allWindows) {
       if(!winUtils.isBrowser(chromeWindow)) {
-        if(chromeWindow.name == "popupVideoWindow") {
+        //name ex: popupVideoWindow-alwaysTop-1476516100560-173
+        //         popupVideoWindow-1476516100560-173
+        if(normalWin.test(chromeWindow.name)) {
           if(alwaysTop) {
-            chromeWindow.name = "popupVideoWindow-alwaysTop";
+            chromeWindow.name = "popupVideoWindow-alwaysTop" + chromeWindow.name.split(normalWin)[1];
             topWindow.makeOnTop(chromeWindow, alwaysTop);
           }
         }
-        else if (chromeWindow.name == "popupVideoWindow-alwaysTop") {
+        else if (topWin.test(chromeWindow.name)) {
           if(!alwaysTop) {
-            chromeWindow.name = "popupVideoWindow";
+            chromeWindow.name = "popupVideoWindow" + chromeWindow.name.split(topWin)[1];
             topWindow.makeOnTop(chromeWindow, alwaysTop);
+          }
+        }
+      }
+    }
+  }
+  else if (prefName === "multiWindow"){
+    let multiWindow = pref.get(prefPath + prefName);
+    if(!multiWindow) { //if not allow multi video window, close them.
+      let winRegex = /popupVideoWindow(-alwaysTop)?-[0-9]+-[0-9]+/;
+      let allWindows = winUtils.windows(null, {includePrivate:true});
+      let win;
+      for (let chromeWindow of allWindows) {
+        if(!winUtils.isBrowser(chromeWindow)) {
+          if(winRegex.test(chromeWindow.name)) {
+            if(!win) {
+              win = chromeWindow;
+            } else {
+              chromeWindow.close();
+            }
           }
         }
       }

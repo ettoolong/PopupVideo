@@ -5,6 +5,28 @@
 const host = window.location.host;
 const overlayCheckInterval = setInterval(checkForEmbeds, 3000);
 
+document.addEventListener('fullscreenchange', function(event) {
+  if(document.fullscreen) {
+    hideOverlayIcons();
+  } else {
+    showOverlayIcons();
+  }
+}, false);
+
+function hideOverlayIcons() {
+  Array.from(document.querySelectorAll('.popupvideo__overlay__container'))
+    .forEach(el => {
+      el.classList.add('popupvideo__overlay__container__hide');
+    });
+}
+
+function showOverlayIcons() {
+  Array.from(document.querySelectorAll('.popupvideo__overlay__container'))
+    .forEach(el => {
+      el.classList.remove('popupvideo__overlay__container__hide');
+    });
+}
+
 self.port.on('detach', function() {
   clearInterval(overlayCheckInterval);
   Array.from(document.querySelectorAll('.popupvideo__overlay__wrapper'))
