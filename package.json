@@ -1,7 +1,7 @@
 {
   "title": "popup video",
   "name": "popup-video",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Popup Youtube video to standalone window.",
   "main": "data/js/addon-script.js",
   "author": "ettoolong@hotmail.com",
@@ -33,6 +33,18 @@
                 {"value": 7, "label": "853 x 480"},
                 {"value": 8, "label": "1280 x 745"}],
     "description": "Set popup window default size."
+  },
+  {
+    "name": "defaultPosition",
+    "type": "menulist",
+    "title": "Default window position",
+    "value": 0,
+    "options": [{"value": 0, "label": "center"},
+                {"value": 1, "label": "topLeft"},
+                {"value": 2, "label": "bottomLeft"},
+                {"value": 3, "label": "topRight"},
+                {"value": 4, "label": "bottomRight"}],
+    "description": "Set popup window default position."
   },
   {
     "name": "resizable",

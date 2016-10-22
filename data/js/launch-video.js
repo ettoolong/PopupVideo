@@ -51,12 +51,14 @@ const sizeMapping = [
 module.exports = function (url, topWindow) {
   //console.log('url = ' + url);
   let defaultSize = pref.get(prefPath + "defaultSize");
+  let defaultPosition = pref.get(prefPath + "defaultPosition");
   let resizable = pref.get(prefPath + "resizable");
   let alwaysTop = pref.get(prefPath + "alwaysTop");
   let multiWindow = pref.get(prefPath + "multiWindow");
   let name = alwaysTop ? "popupVideoWindow-alwaysTop" : "popupVideoWindow";
   name += "-" + Date.now() + "-" + Math.floor((Math.random() * 1000)); //let all windows get differen name.
   let win;
+  let positionStr = "";
 
   let {id, domain, type} = getVideoId(url);
   //({changed: 'activate', domain: 'vimeo.com'});
@@ -67,12 +69,35 @@ module.exports = function (url, topWindow) {
       chrome: false,
       titlebar: true,
       //alwaysraised: true,
-      centerscreen: true,
+      //centerscreen: true,
       private: true
     };
 
-    if(resizable)
+    if(resizable) {
       features.resizable = true;
+    }
+
+    if(defaultPosition === 0) {
+      //center of screen
+      features.centerscreen = true;
+    }
+    else {
+      //calculate the popup window position
+      let screen = winUtils.getMostRecentBrowserWindow().screen;
+      let top = screen.top;
+      let left = screen.left;
+      if (defaultPosition === 2 || defaultPosition === 4) {
+        top = screen.top + screen.height - sizeMapping[defaultSize].height;
+        if(top < screen.top)
+          top = screen.top;
+      }
+      if (defaultPosition === 3 || defaultPosition === 4) {
+        left = screen.left + screen.width - sizeMapping[defaultSize].width;
+        if(left < screen.left)
+          left = screen.left;
+      }
+      positionStr = ",top=" + top + ",left=" + left;
+    }
 
     if(!multiWindow) { //if not allow multi video window, find one opened window to play video
       let winRegex = /popupVideoWindow(-alwaysTop)?-[0-9]+-[0-9]+/;
@@ -85,12 +110,11 @@ module.exports = function (url, topWindow) {
         }
       }
     }
-
     if(!win) {
       win = winUtils.openDialog({
         name: name,
         url: videoUrl,
-        features: Object.keys(features).join() + ",width=" + sizeMapping[defaultSize].width+ ",height=" + sizeMapping[defaultSize].height
+        features: Object.keys(features).join() + ",width=" + sizeMapping[defaultSize].width+ ",height=" + sizeMapping[defaultSize].height + positionStr
       });
     } else {
       win.location.href = videoUrl; //if not specify url, assign url here.
