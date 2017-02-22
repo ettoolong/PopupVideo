@@ -6,6 +6,7 @@ const prefPath = "extensions.@popup-video.";
 const getYouTubeUrl = require("./lib/get-youtube-url");
 const getTwitchUrl = require("./lib/get-twitch-url");
 const getVimeoUrl = require("./lib/get-vimeo-url");
+const getDailymotionUrl = require("./lib/get-dailymotion-url");
 const getVideoId = require("./get-video-id");
 
 // https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XUL/window
@@ -14,7 +15,8 @@ const getVideoId = require("./get-video-id");
 const getUrlFn = {
   "vimeo": getVimeoUrl,
   "twitch": getTwitchUrl,
-  "youtube": getYouTubeUrl
+  "youtube": getYouTubeUrl,
+  "dailymotion": getDailymotionUrl
 };
 
 const sizeMapping = [

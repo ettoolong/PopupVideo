@@ -5,15 +5,27 @@ let pref = require("sdk/preferences/service");
 const prefPath = "extensions.@popup-video.";
 const pageMod = require("sdk/page-mod");
 
-const getYouTubeUrl = require("./lib/get-youtube-url");
-const getVimeoUrl = require("./lib/get-vimeo-url");
-const getTwitchUrl = require("./lib/get-twitch-url");
 const launchVideo = require("./launch-video");
 const contextMenuHandlers = require("./context-menu");
 const popupVideoAPI = require("./addon-api.js");
 const topWindow = require("./top-window");
 
 let launchIconsMod= null;
+
+let events = require("sdk/system/events");
+let { Ci } = require("chrome");
+let { MatchPattern } = require("sdk/util/match-pattern");
+let pattern = new MatchPattern("https://www.youtube.com/embed/*");
+
+const httpReqModHandler = event => {
+  //modify http header Referer to allow video play in iframe.
+  //for example: https://www.youtube.com/watch?v=8SzFaEqbLRM
+  let channel = event.subject.QueryInterface(Ci.nsIHttpChannel);
+  let targetURI = channel.URI;
+  if(pattern.test(targetURI.spec)) {
+    channel.setRequestHeader("Referer", "https://youtube.com", false);
+  }
+};
 
 function onWinOpen (chromeWindow) {
   let chromeBrowser = chromeWindow.gBrowser;
@@ -40,15 +52,15 @@ function loadPageMod () {
       //TODO: set overlayIcon pref to page.
       worker.port.on("launch", function(opts) {
         if (opts.domain.indexOf("youtube.com") > -1) {
-          opts.getUrlFn = getYouTubeUrl;
           launchVideo(opts.url, topWindow);
         }
         else if (opts.domain.indexOf("vimeo.com")  > -1) {
-          opts.getUrlFn = getVimeoUrl;
           launchVideo(opts.url, topWindow);
         }
         else if (opts.domain.indexOf("twitch.tv")  > -1) {
-          opts.getUrlFn = getTwitchUrl;
+          launchVideo(opts.url, topWindow);
+        }
+        else if (opts.domain.indexOf("dailymotion.com")  > -1) {
           launchVideo(opts.url, topWindow);
         }
       });
@@ -136,9 +148,13 @@ exports.main = function() {
       onWinOpen( chromeWindow );
     }
   }
+
+  events.on("http-on-modify-request", httpReqModHandler);
 };
 
 exports.onUnload = function(reason) {
+  events.off("http-on-modify-request", httpReqModHandler);
+
   topWindow.destroy();
   contextMenuHandlers.destroy();
   // browserResizeMod.destroy();

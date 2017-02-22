@@ -32,6 +32,9 @@ module.exports = function (str) {
     id = vId;
 	  type = vType;
     domain = 'twitch';
+  } else if (/dailymotion/.test(str)) {
+    id = dailymotion(str);
+    domain = 'dailymotion';
   }
   return {id, domain, type};
 };
@@ -79,6 +82,17 @@ function vimeo(str) {
  */
 function vine(str) {
   var regex = /https:\/\/vine\.co\/v\/([a-zA-Z0-9]*)\/?/;
+  var matches = regex.exec(str);
+  return matches && matches[1];
+}
+
+/**
+ * Get the dailymotion id.
+ * @param {string} str - the url from which you want to extract the id
+ * @returns {string|undefined}
+ */
+function dailymotion(str) {
+  var regex = /https?:\/\/(?:www\.)?dailymotion\.com\/video\/([a-zA-Z0-9]*)(?:\?)?/;
   var matches = regex.exec(str);
   return matches && matches[1];
 }

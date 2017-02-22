@@ -54,3 +54,7 @@
 .popupvideo__overlay__container:hover .popupvideo__overlay__icon {
     opacity: 1;
 }
+
+.dmp_Dock {
+    right: 40px;
+}

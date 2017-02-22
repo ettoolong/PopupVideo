@@ -43,6 +43,59 @@ function checkForEmbeds() {
   ytEmbedChecks();
   vimeoEmbedChecks();
   twitchEmbedChecks();
+  dmEmbedChecks();
+}
+
+function dmEmbedChecks() {
+  // dailymotion Home Page
+  const dmHomeContainers = Array.from(document.querySelectorAll('.sd_video_preview'));
+  if (dmHomeContainers.length) {
+    dmHomeContainers.forEach(dmHomePageHandler);
+  }
+
+  // dailymotion Watch Page
+  const dmWatchContainer = document.querySelector('.dmp_VideoView');
+  if (dmWatchContainer) {
+    dmWatchElementHandler(dmWatchContainer);
+  }
+
+}
+
+function dmHomePageHandler(el) {
+  if (el.classList.contains('popupvideo__overlay__wrapper')) return;
+  const url = el.getAttribute('data-id');
+
+  el.classList.add('popupvideo__overlay__wrapper');
+  const tmp = getTemplate();
+  tmp.addEventListener('click', function(ev) {
+    evNoop(ev);
+    self.port.emit('launch', {
+      url: 'https://www.dailymotion.com/video/' + url,
+      domain: 'dailymotion.com'
+    });
+  });
+  el.appendChild(tmp);
+}
+
+function dmWatchElementHandler(el) {
+  if (el.classList.contains('popupvideo__overlay__wrapper')) return;
+
+  el.classList.add('popupvideo__overlay__wrapper');
+  const tmp = getTemplate();
+  tmp.addEventListener('click', function(ev) {
+    evNoop(ev);
+    const videoEl = document.querySelector('video');
+    //videoEl.pause();
+    closeFullscreen();
+    self.port.emit('launch', {
+      url: window.location.href,
+      domain: 'dailymotion.com',
+      time: videoEl.currentTime,
+      volume: videoEl.volume,
+      muted: videoEl.muted
+    });
+  }, true);
+  el.appendChild(tmp);
 }
 
 function ytEmbedChecks() {
@@ -51,41 +104,35 @@ function ytEmbedChecks() {
   // YouTube Home Page
   const ytHomeContainers = Array.from(document.querySelectorAll('#feed .yt-lockup-thumbnail'));
   if (ytHomeContainers.length) {
-    sendMetric('available');
     ytHomeContainers.forEach(ytHomePageHandler);
   }
 
   const ytSearchContainers = Array.from(document.querySelectorAll('#results .yt-lockup-thumbnail'));
   if (ytSearchContainers.length) {
-    sendMetric('available');
     ytSearchContainers.forEach(ytHomePageHandler);
   }
 
   // YouTube Watch Page
   const ytWatchContainer = document.querySelector('.html5-video-player');
   if (ytWatchContainer) {
-    sendMetric('available');
     ytWatchElementHandler(ytWatchContainer);
   }
 
   // YouTube Watch Page related videos
   const ytRelatedContainers = Array.from(document.querySelectorAll('.watch-sidebar-section .thumb-wrapper'));
   if (ytRelatedContainers.length) {
-    sendMetric('available');
     ytRelatedContainers.forEach(ytHomePageHandler);
   }
 
   // YouTube Channel Page videos featured section
   const ytChannelFeaturedContainers = Array.from(document.querySelectorAll('#browse-items-primary .lohp-thumb-wrap'));
   if (ytChannelFeaturedContainers.length) {
-    sendMetric('available');
     ytChannelFeaturedContainers.forEach(ytHomePageHandler);
   }
 
   // YouTube Channel Page videos uploads section
   const ytChannelUploadsContainers = Array.from(document.querySelectorAll('#browse-items-primary .yt-lockup-thumbnail'));
   if (ytChannelUploadsContainers.length) {
-    sendMetric('available');
     ytChannelUploadsContainers.forEach(ytHomePageHandler);
   }
 }
@@ -154,7 +201,6 @@ function vimeoEmbedChecks() {
       });
       el.appendChild(tmp);
     });
-    sendMetric('available');
   }
 
   // VIMEO LOGGED-IN HOME PAGE
@@ -177,7 +223,6 @@ function vimeoEmbedChecks() {
       });
       el.appendChild(tmp);
     });
-    sendMetric('available');
   }
 
   // VIMEO DETAIL PAGE
@@ -199,7 +244,6 @@ function vimeoEmbedChecks() {
       });
     }, true);
     vimeoDetailContainer.appendChild(tmp);
-    sendMetric('available');
   }
 }
 
@@ -209,24 +253,20 @@ function twitchEmbedChecks() {
   // twitch channel list Page
   const twitchStreamItems = Array.from(document.querySelectorAll('.streams-grid .thumb'));
   if (twitchStreamItems.length) {
-    sendMetric('available');
     twitchStreamItems.forEach(twitchStreamHandler);
   }
 
   // twitch video list Page
   const twitchVodItems = Array.from(document.querySelectorAll('.card__img--vod'));
   if (twitchVodItems.length) {
-    sendMetric('available');
     twitchVodItems.forEach(twitchVodHandler);
   }
 
   // twitch Watch Page
   const twitchWatchContainer = document.querySelector('.player');
   if (twitchWatchContainer) {
-    sendMetric('available');
     twitchWatchHandler(twitchWatchContainer);
   }
-
 }
 
 function twitchStreamHandler(el) {
@@ -294,15 +334,6 @@ function getTemplate() {
 
   containerEl.appendChild(iconEl);
   return containerEl;
-}
-
-function sendMetric(method) {
-  /*
-  self.port.emit('metric', {
-    object: 'overlay_icon',
-    method: method
-  });
-  */
 }
 
 function evNoop(ev) {
