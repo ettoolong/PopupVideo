@@ -13,6 +13,7 @@ const getVideoId = require("./get-video-id");
 // https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XUL/Attribute/accelerated
 
 const getUrlFn = {
+  "videoUrl": (url, type, cb) => { return cb(null, url); },
   "vimeo": getVimeoUrl,
   "twitch": getTwitchUrl,
   "youtube": getYouTubeUrl,

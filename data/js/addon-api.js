@@ -27,12 +27,12 @@ const setTopWindow = (tw) => {
 exports.setTopWindow = setTopWindow;
 
 const supportSite = (url) => {
-  return ( siteRegex.youtube.test(url) || siteRegex.twitch.test(url) || siteRegex.vimeo.test(url) );
+  return ( siteRegex.youtube.test(url) || siteRegex.twitch.test(url) || siteRegex.vimeo.test(url) || siteRegex.dailymotion.test(url) );
 };
 exports.supportSite = supportSite;
 
-const popupVideo = (url) => {
-  if( supportSite(url) ) {
+const popupVideo = (url, force) => {
+  if( supportSite(url) || force) {
     launchVideo(url, topWindow);
   }
 };

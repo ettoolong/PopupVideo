@@ -22,19 +22,27 @@ module.exports = function (str) {
     id = vId;
 	  type = vType;
     domain = 'youtube';
-  } else if (/vimeo/.test(str)) {
+  }
+  else if (/vimeo/.test(str)) {
     id = vimeo(str);
     domain = 'vimeo';
   // } else if (/vine/.test(str)) {
   // 	id = vine(str);
-  } else if (/twitch/.test(str)) {
+  }
+  else if (/twitch/.test(str)) {
 	  let {vId, vType} = twitch(str);
     id = vId;
 	  type = vType;
     domain = 'twitch';
-  } else if (/dailymotion/.test(str)) {
+  }
+  else if (/dailymotion/.test(str)) {
     id = dailymotion(str);
     domain = 'dailymotion';
+  }
+  else {
+    id = str;
+    domain = 'videoUrl';
+    type = 'videoUrl';
   }
   return {id, domain, type};
 };

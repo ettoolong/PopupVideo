@@ -32,8 +32,17 @@ function init(tw) {
     image: data.url("img/icon.svg"),
     context: cm.PredicateContext(function(context){
       if(pref.get(prefPath + "contextMenu")) {
-        lastUrl = context.linkURL;
-        return (siteRegex.youtube.test(lastUrl) || siteRegex.twitch.test(lastUrl) || siteRegex.vimeo.test(lastUrl) );
+        if(context.linkURL) {
+          lastUrl = context.linkURL;
+          return (siteRegex.youtube.test(lastUrl) || siteRegex.twitch.test(lastUrl) || siteRegex.vimeo.test(lastUrl) || siteRegex.dailymotion.test(lastUrl));
+        }
+        else if(context.documentType && /^video\/(mp4|webm|ogg)/i.test(context.documentType) ) {
+          lastUrl = context.documentURL;
+          return true;
+        }
+        else {
+          return false;
+        }
       }
       else {
         return false;
