@@ -1,7 +1,7 @@
 {
   "title": "popup video",
   "name": "popup-video",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Popup Youtube video to standalone window.",
   "main": "data/js/addon-script.js",
   "author": "ettoolong@hotmail.com",

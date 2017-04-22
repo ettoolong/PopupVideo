@@ -53,7 +53,8 @@ module.exports = function (str) {
  * @returns {string|undefined, string}
  */
 function twitch(str) {
-  const vodTester = /https:\/\/(?:www\.)twitch\.tv\/[0-9a-zA-Z_]{1,25}\/v\/([0-9]{1,10})/g;
+  //const vodTester = /https:\/\/(?:www\.)twitch\.tv\/[0-9a-zA-Z_]{1,25}\/v\/([0-9]{1,10})/g; //old version url format
+  const vodTester = /https:\/\/(?:www\.)twitch\.tv\/videos\/([0-9]{1,10})/g;
   if (vodTester.test(str)) {
     return {vId: str.split(vodTester)[1].split('&')[0], vType: 'vod'};
   }

@@ -5,32 +5,30 @@
 const host = window.location.host;
 const overlayCheckInterval = setInterval(checkForEmbeds, 3000);
 
+const hideOverlayIcons = () => {
+  Array.from(document.querySelectorAll('.popupvideo__overlay__container')).forEach(el => {
+    el.classList.add('popupvideo__overlay__container__hide');
+  });
+};
+
+const showOverlayIcons = ()  => {
+  Array.from(document.querySelectorAll('.popupvideo__overlay__container')).forEach(el => {
+    el.classList.remove('popupvideo__overlay__container__hide');
+  });
+};
+
 document.addEventListener('fullscreenchange', function(event) {
   if(document.fullscreen) {
     hideOverlayIcons();
-  } else {
+  }
+  else {
     showOverlayIcons();
   }
 }, false);
 
-function hideOverlayIcons() {
-  Array.from(document.querySelectorAll('.popupvideo__overlay__container'))
-    .forEach(el => {
-      el.classList.add('popupvideo__overlay__container__hide');
-    });
-}
-
-function showOverlayIcons() {
-  Array.from(document.querySelectorAll('.popupvideo__overlay__container'))
-    .forEach(el => {
-      el.classList.remove('popupvideo__overlay__container__hide');
-    });
-}
-
 self.port.on('detach', function() {
   clearInterval(overlayCheckInterval);
-  Array.from(document.querySelectorAll('.popupvideo__overlay__wrapper'))
-       .forEach(removeOverlay);
+  Array.from(document.querySelectorAll('.popupvideo__overlay__wrapper')).forEach(removeOverlay);
 });
 
 function removeOverlay(el) {
@@ -250,16 +248,10 @@ function vimeoEmbedChecks() {
 function twitchEmbedChecks() {
   if (!(host.indexOf('twitch.tv') > -1)) return;
 
-  // twitch channel list Page
-  const twitchStreamItems = Array.from(document.querySelectorAll('.streams-grid .thumb'));
+  // twitch channel list Page & twitch video list Page
+  const twitchStreamItems = Array.from(document.querySelectorAll('.card__img'));
   if (twitchStreamItems.length) {
     twitchStreamItems.forEach(twitchStreamHandler);
-  }
-
-  // twitch video list Page
-  const twitchVodItems = Array.from(document.querySelectorAll('.card__img--vod'));
-  if (twitchVodItems.length) {
-    twitchVodItems.forEach(twitchVodHandler);
   }
 
   // twitch Watch Page
@@ -276,31 +268,23 @@ function twitchStreamHandler(el) {
   const tmp = getTemplate();
   tmp.addEventListener('click', function(ev) {
     evNoop(ev);
-    const urlEl = el.querySelector('.aspect');
-    if (urlEl && urlEl.getAttribute('href')) {
-      self.port.emit('launch', {
-        url: 'https://www.twitch.tv' + urlEl.getAttribute('href'),
-        domain: 'twitch.tv'
-      });
-    } else console.error('Error parsing url from Twitch stream list page', el); // eslint-disable-line no-console
-  });
-  el.appendChild(tmp);
-}
-
-function twitchVodHandler(el) {
-  if (el.classList.contains('popupvideo__overlay__wrapper')) return;
-
-  el.classList.add('popupvideo__overlay__wrapper');
-  const tmp = getTemplate();
-  tmp.addEventListener('click', function(ev) {
-    evNoop(ev);
-    const urlEl = el.parentNode;
-    if (urlEl && urlEl.getAttribute('href')) {
-      self.port.emit('launch', {
-        url: urlEl.getAttribute('href'),
-        domain: 'twitch.tv'
-      });
-    } else console.error('Error parsing url from Twitch stream list page', el); // eslint-disable-line no-console
+    if(el.parentNode.nodeName === 'A') {
+      let urlEl = el.parentNode;
+      if (urlEl && urlEl.getAttribute('href')) {
+        self.port.emit('launch', {
+          url: urlEl.getAttribute('href'),
+          domain: 'twitch.tv'
+        });
+      } else console.error('Error parsing url from Twitch stream list page', el); // eslint-disable-line no-console
+    } else {
+      let urlEl = el.querySelector('.js-card-thumb');
+      if (urlEl && urlEl.getAttribute('href')) {
+        self.port.emit('launch', {
+          url: 'https://www.twitch.tv' + urlEl.getAttribute('href'),
+          domain: 'twitch.tv'
+        });
+      } else console.error('Error parsing url from Twitch stream list page', el); // eslint-disable-line no-console
+    }
   });
   el.appendChild(tmp);
 }
