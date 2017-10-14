@@ -1,0 +1,66 @@
+{
+	"extName": {
+		"message": "Popup Video(WebExtension)",
+		"description": ""
+	},
+	"extDescription": {
+		"message": "將 Youtube/Twitch 影片彈出至獨立視窗",
+		"description": ""
+	},
+	"optionPageTitle": {
+		"message": "Popup Video 設定頁",
+		"description": ""
+	},
+	"contextMenuItemTitle": {
+		"message": "彈出影片視窗",
+		"description": ""
+	},
+  "defaultSize": {
+		"message": "彈出影片視窗",
+		"description": ""
+	},
+  "defaultPosition": {
+		"message": "預設視窗位置",
+		"description": ""
+	},
+  "center": {
+		"message": "螢幕中央",
+		"description": ""
+  },
+  "topLeft": {
+		"message": "左上角",
+		"description": ""
+  },
+  "bottomLeft": {
+		"message": "左下角",
+		"description": ""
+  },
+  "topRight": {
+		"message": "右上角",
+		"description": ""
+  },
+  "bottomRight": {
+		"message": "右下角",
+		"description": ""
+  },
+  "contextMenu": {
+		"message": "在右鍵選單中顯示 [彈出影片視窗] 功能",
+		"description": ""
+  },
+  "overlayIcon": {
+		"message": "在影片和影片縮圖上疊加彈出影片視窗圖示",
+		"description": ""
+  },
+  "resizable": {
+		"message": "可調整彈出的播放視窗大小",
+		"description": ""
+  },
+  "alwaysTop": {
+		"message": "彈出的播放視窗永遠在最上層",
+		"description": ""
+  },
+  "multiWindow": {
+		"message": "允許彈出一個以上的播放窗",
+		"description": ""
+  }
+}

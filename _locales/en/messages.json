@@ -1,0 +1,66 @@
+{
+	"extName": {
+		"message": "Popup Video(WebExtension)",
+		"description": ""
+	},
+	"extDescription": {
+		"message": "Popup Youtube/Twitch video to standalone window.",
+		"description": ""
+	},
+	"optionPageTitle": {
+		"message": "Popup Video Preferences",
+		"description": ""
+	},
+	"contextMenuItemTitle": {
+		"message": "Popup video window",
+		"description": ""
+	},
+  "defaultSize": {
+		"message": "Default video window size",
+		"description": ""
+	},
+  "defaultPosition": {
+		"message": "Default video window position",
+		"description": ""
+	},
+  "center": {
+		"message": "Center",
+		"description": ""
+  },
+  "topLeft": {
+		"message": "Top left corner",
+		"description": ""
+  },
+  "bottomLeft": {
+		"message": "Bottom left corner",
+		"description": ""
+  },
+  "topRight": {
+		"message": "Top right corner",
+		"description": ""
+  },
+  "bottomRight": {
+		"message": "Bottom right corner",
+		"description": ""
+  },
+  "contextMenu": {
+		"message": "Show [Popup video window] item in context menu",
+		"description": ""
+  },
+  "overlayIcon": {
+		"message": "Add popup video icon on video/thumbnail",
+		"description": ""
+  },
+  "resizable": {
+		"message": "Set popup window resizable",
+		"description": ""
+  },
+  "alwaysTop": {
+		"message": "Set popup window always top",
+		"description": ""
+  },
+  "multiWindow": {
+		"message": "Allow popup multi video window",
+		"description": ""
+  }
+}

@@ -26,7 +26,7 @@
 }
 
 .popupvideo__overlay__icon {
-    background: url('../../img/icon.svg') no-repeat;
+    background: url('/icon/icon.svg') no-repeat;
     background-position: center bottom;
     background-size: 32px auto;
     cursor: pointer;

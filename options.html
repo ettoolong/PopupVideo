@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="options.css"/>
+    <script id="ttsfox-option" type="text/javascript" src="options.js"></script>
+    <title data-l10n-id="optionPageTitle">Image Preview Preferences</title>
+  </head>
+  <body>
+    <div>
+      <div style="display:inline-block;">
+
+        <div class="itemDiv">
+          <label data-l10n-id="defaultSize">Default video window size</label>
+          <select id="defaultSize" type="option">
+            <option value="0">425 x 344</option>
+            <option value="1">480 x 385</option>
+            <option value="2">640 x 505</option>
+            <option value="3">960 x 745</option>
+            <option value="4">280 x 160</option>
+            <option value="5">560 x 320</option>
+            <option value="6">640 x 360</option>
+            <option value="7">853 x 480</option>
+            <option value="8">1280 x 745</option>
+          </select>
+        </div>
+
+        <div class="itemDiv">
+          <label data-l10n-id="defaultPosition">Default video window position</label>
+          <select id="defaultPosition" type="option">
+            <option value="0" data-l10n-id="center">Center</option>
+            <option value="1" data-l10n-id="topLeft">Top left corner</option>
+            <option value="2" data-l10n-id="bottomLeft">Bottom left corner</option>
+            <option value="3" data-l10n-id="topRight">Top right corner</option>
+            <option value="4" data-l10n-id="bottomRight">Bottom right corner</option>
+          </select>
+        </div>
+
+        <div class="itemDiv">
+          <input type="checkbox" id="contextMenu">
+          <label for="contextMenu" data-l10n-id="contextMenu">Show [Popup video window] item in context menu</label>
+        </div>
+
+        <div class="itemDiv">
+          <input type="checkbox" id="overlayIcon">
+          <label for="overlayIcon" data-l10n-id="overlayIcon">Add popup video icon on video/thumbnail</label>
+        </div>
+
+        <!-- not support yet -->
+        <!--<div class="itemDiv">
+          <input type="checkbox" id="resizable">
+          <label for="resizable" data-l10n-id="resizable">Set popup window resizable</label>
+        </div>
+
+        <div class="itemDiv">
+          <input type="checkbox" id="alwaysTop">
+          <label for="alwaysTop" data-l10n-id="alwaysTop">Set popup window always top</label>
+        </div>-->
+
+        <div class="itemDiv">
+          <input type="checkbox" id="multiWindow">
+          <label for="multiWindow" data-l10n-id="multiWindow">Allow popup multi video window</label>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>
