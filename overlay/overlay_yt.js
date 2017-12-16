@@ -36,9 +36,11 @@ function ytHomePageHandler(el) {
   let tmp = getTemplate();
   tmp.addEventListener('click', ev => {
     evNoop(ev);
+    let urlEl2 = el.querySelector('a.ytd-thumbnail');
+    let url2 = urlEl.getAttribute('href');
     sendMessageToAddon({
       action: 'launchVideo',
-      url: 'https://youtube.com' + url,
+      url: 'https://youtube.com' + url2,
       domain: 'youtube.com'
     });
   });
