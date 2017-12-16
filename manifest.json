@@ -5,11 +5,11 @@
   "version": "0.0.3",
   "homepage_url": "https://github.com/ettoolong/PopupVideo",
   "icons": {
-    "16": "icon/icon.svg",
-    "32": "icon/icon.svg",
-    "48": "icon/icon.svg",
-    "64": "icon/icon.svg",
-    "96": "icon/icon.svg"
+    "16": "icon/logo.svg",
+    "32": "icon/logo.svg",
+    "48": "icon/logo.svg",
+    "64": "icon/logo.svg",
+    "96": "icon/logo.svg"
   },
   "applications": {
     "gecko": {
