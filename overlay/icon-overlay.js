@@ -6,6 +6,16 @@ const host = window.location.host;
 let overlayCheckInterval = setInterval(checkForEmbeds, 3000);
 let removeIcons = false;
 let currentPrefs = {};
+let positionList = ['topCenter', 'topLeft', 'topRight'];
+
+browser.storage.local.get().then(results => {
+  if ((typeof results.length === 'number') && (results.length > 0)) {
+    results = results[0];
+  }
+  if (results.version) {
+    currentPrefs = results;
+  }
+});
 
 const storageChangeHandler = (changes, area) => {
   if(area === 'local') {
@@ -21,6 +31,9 @@ const storageChangeHandler = (changes, area) => {
             clearInterval(overlayCheckInterval);
             Array.from(document.querySelectorAll('.popupvideo__overlay__wrapper')).forEach(removeOverlay);
           }
+          break;
+        case 'iconPosition':
+          Array.from(document.querySelectorAll('.popupvideo__overlay__container')).forEach(setOverlayPosition);
           break;
       }
     }
@@ -75,12 +88,18 @@ function removeOverlay(el) {
   if (containerEl) containerEl.remove();
 }
 
+function setOverlayPosition(el) {
+  el.classList.remove(...positionList);
+  el.classList.add(positionList[currentPrefs.iconPosition]);
+}
+
 // General Helpers
 function getTemplate() {
   let containerEl = document.createElement('div');
   let iconEl = document.createElement('div');
 
   containerEl.className = 'popupvideo__overlay__container';
+  containerEl.classList.add(positionList[currentPrefs.iconPosition]);
   iconEl.className = 'popupvideo__overlay__icon';
 
   containerEl.appendChild(iconEl);

@@ -6,7 +6,8 @@ let defaultPreference = {
   resizable: true,
   alwaysTop: true,
   multiWindow: true,
-  version: 1
+  iconPosition: 2,
+  version: 2
 };
 let preferences = {};
 let menuId = null;
@@ -39,6 +40,20 @@ const loadPreference = () => {
     } else {
       preferences = results;
       browser.storage.onChanged.addListener(storageChangeHandler);
+    }
+    if (preferences.version !== defaultPreference.version) {
+      let update = {};
+      let needUpdate = false;
+      for(let p in defaultPreference) {
+        if(preferences[p] === undefined) {
+          update[p] = defaultPreference[p];
+          needUpdate = true;
+        }
+      }
+      if(needUpdate) {
+        update.version = defaultPreference.version;
+        browser.storage.local.set(update).then(null, err => {});
+      }
     }
     resetContextMenu();
   });

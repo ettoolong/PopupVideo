@@ -51,7 +51,23 @@
 		"message": "Add popup video icon on video/thumbnail",
 		"description": ""
   },
-  "resizable": {
+  "iconPosition": {
+		"message": "Position",
+		"description": ""
+  },
+  "iconPositionTopCenter": {
+		"message": "Top center",
+		"description": ""
+  },
+	"iconPositionTopLeft": {
+		"message": "Top left",
+		"description": ""
+  },
+	"iconPositionTopRight": {
+		"message": "Top right",
+		"description": ""
+  },
+	"resizable": {
 		"message": "Set popup window resizable",
 		"description": ""
   },

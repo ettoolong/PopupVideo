@@ -7,18 +7,31 @@
 .popupvideo__overlay__container {
     align-items: center;
     background-color: rgba(255,255,255,0);
-    border-radius: 0 0 0 4px;
     display: flex;
     height: 100%;
     justify-content: center;
-    right: 0%;
     max-height: 34px;
     max-width: 36px;
     padding: 2px 2px 4px;
     position: absolute;
-    top: 0;
     width: 100%;
     z-index: 999999;
+}
+
+.popupvideo__overlay__container.topRight {
+    border-radius: 0 0 0 4px;
+    right: 0px;
+    top: 0px;
+}
+.popupvideo__overlay__container.topLeft {
+    border-radius: 0 0 4px 0;
+    left: 0px;
+    top: 0px;
+}
+.popupvideo__overlay__container.topCenter {
+    border-radius: 0 0 4px 4px;
+    left: calc((100% - 36px)/2);
+    top: 0px;
 }
 
 .popupvideo__overlay__container:hover {

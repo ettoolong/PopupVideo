@@ -51,7 +51,23 @@
 		"message": "在影片和影片縮圖上疊加彈出影片視窗圖示",
 		"description": ""
   },
-  "resizable": {
+  "iconPosition": {
+		"message": "位置",
+		"description": ""
+  },
+  "iconPositionTopCenter": {
+		"message": "上方置中",
+		"description": ""
+  },
+	"iconPositionTopLeft": {
+		"message": "左上角",
+		"description": ""
+  },
+	"iconPositionTopRight": {
+		"message": "右上角",
+		"description": ""
+  },
+	"resizable": {
 		"message": "可調整彈出的播放視窗大小",
 		"description": ""
   },
