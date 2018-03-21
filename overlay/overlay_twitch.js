@@ -5,14 +5,13 @@ function checkForEmbeds() {
 
   // twitch channel list Page
   //
-  //let twitchStreamItems = Array.from(document.querySelectorAll('.streams-grid .thumb'));
-  let twitchStreamItems = Array.from(document.querySelectorAll('.tw-thumbnail-card'));
+  let twitchStreamItems = Array.from(document.querySelectorAll('.live-channel-card'));
   if (twitchStreamItems.length) {
     twitchStreamItems.forEach(twitchStreamHandler);
   }
 
   // twitch video list Page
-  let twitchVodItems = Array.from(document.querySelectorAll('.video-preview-card'));
+  let twitchVodItems = Array.from(document.querySelectorAll('div[data-a-target^="video-tower-card-"]'));
   if (twitchVodItems.length) {
     twitchVodItems.forEach(twitchVodHandler);
   }
@@ -33,7 +32,7 @@ function twitchStreamHandler(el) {
   let tmp = getTemplate();
   tmp.addEventListener('click', ev => {
     evNoop(ev);
-    let urlEl = el.querySelector('a[data-a-target="tw-thumbnail-card-link"]');
+    let urlEl = el.querySelector('a[data-a-target="live-channel-card-thumbnail-link"]');
     if (urlEl && urlEl.getAttribute('href')) {
       sendMessageToAddon({
         action: 'launchVideo',
@@ -41,7 +40,7 @@ function twitchStreamHandler(el) {
         domain: 'twitch.tv'
       });
     } else console.error('Error parsing url from Twitch stream list page', el); // eslint-disable-line no-console
-  });
+  },true);
   thumbnail.appendChild(tmp);
 }
 
@@ -49,7 +48,7 @@ function twitchVodHandler(el) {
   if (el.classList.contains('popupvideo__overlay__wrapper')) return;
 
   el.classList.add('popupvideo__overlay__wrapper');
-  let thumbnail = el.querySelector('.full-width');
+  let thumbnail = el.querySelector('.tw-full-width');
 
   let tmp = getTemplate();
   tmp.addEventListener('click', ev => {
@@ -63,7 +62,7 @@ function twitchVodHandler(el) {
         domain: 'twitch.tv'
       });
     } else console.error('Error parsing url from Twitch stream list page', el); // eslint-disable-line no-console
-  });
+  },true);
   thumbnail.appendChild(tmp);
 }
 
@@ -83,6 +82,6 @@ function twitchWatchHandler(el) {
       domain: 'twitch.tv',
       time: videoEl.currentTime
     });
-  });
+  },true);
   el.appendChild(tmp);
 }
