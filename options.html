@@ -11,6 +11,22 @@
       <div style="display:inline-block;">
 
         <div class="itemDiv">
+          <div class="col">
+            <label data-l10n-id="defaultSize">Default video window size - </label>
+          </div>
+          <div class="col">
+            <div>
+              <label for="windowWidth" data-l10n-id="windowWidth">Minimum width</label>
+              <input type="number" min="80" id="windowWidth">
+            </div>
+            <div style="margin-top: 2px;">
+              <label for="windowHeight" data-l10n-id="windowHeight">Minimum height</label>
+              <input type="number" min="30" id="windowHeight">
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="itemDiv">
           <label data-l10n-id="defaultSize">Default video window size</label>
           <select id="defaultSize" type="option">
             <option value="0">425 x 344</option>
@@ -23,7 +39,7 @@
             <option value="7">853 x 480</option>
             <option value="8">1280 x 745</option>
           </select>
-        </div>
+        </div> -->
 
         <div class="itemDiv">
           <label data-l10n-id="defaultPosition">Default video window position</label>
@@ -67,6 +83,11 @@
         <div class="itemDiv">
           <input type="checkbox" id="multiWindow">
           <label for="multiWindow" data-l10n-id="multiWindow">Allow popup multi video window</label>
+        </div>
+
+        <div class="itemDiv">
+          <input type="checkbox" id="privateBrowsing">
+          <label for="privateBrowsing" data-l10n-id="privateBrowsing">Open popup window by private browsing</label>
         </div>
 
       </div>

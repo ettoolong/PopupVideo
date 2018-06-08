@@ -16,7 +16,7 @@
 		"description": ""
 	},
   "defaultSize": {
-		"message": "Default video window size",
+		"message": "Default video window size - ",
 		"description": ""
 	},
   "defaultPosition": {
@@ -78,5 +78,17 @@
   "multiWindow": {
 		"message": "Allow popup multi video window",
 		"description": ""
-  }
+  },
+	"privateBrowsing": {
+		"message": "Open popup window in private browsing",
+		"description": ""
+	},
+	"windowWidth": {
+		"message": "Width",
+		"description": ""
+	},
+	"windowHeight": {
+		"message": "Height",
+		"description": ""
+	}
 }

@@ -1,3 +1,8 @@
+div.col {
+  vertical-align: top;
+  display: inline-block;
+}
+
 .itemDiv {
   display: block;
   margin-top:4px;

@@ -1,16 +1,5 @@
 let windowID = null;
 let tabID = null;
-const sizeMapping = [
-  {width: 425, height:344},
-  {width: 480, height:385},
-  {width: 640, height:505},
-  {width: 960, height:745},
-  {width: 280, height:160},
-  {width: 560, height:320},
-  {width: 640, height:360},
-  {width: 853, height:480},
-  {width: 1280, height:745}
-];
 
 const launchVideo = (url, pref) => {
   let getUrlFn = {
@@ -29,29 +18,34 @@ const launchVideo = (url, pref) => {
       let top = screen.top;
       let left = screen.left;
       if (pref.defaultPosition === 0) {
-        top = screen.top + (screen.height - sizeMapping[pref.defaultSize].height)/2;
-        left = screen.left + (screen.width - sizeMapping[pref.defaultSize].width)/2;
+        top = screen.top + (screen.height - pref.windowHeight)/2;
+        left = screen.left + (screen.width - pref.windowWidth)/2;
       }
       else {
         if (pref.defaultPosition === 2 || pref.defaultPosition === 4) {
-          top = screen.top + screen.height - sizeMapping[pref.defaultSize].height;
+          top = screen.top + screen.height - pref.windowHeight;
           if(top < screen.top)
             top = screen.top;
         }
         if (pref.defaultPosition === 3 || pref.defaultPosition === 4) {
-          left = screen.left + screen.width - sizeMapping[pref.defaultSize].width;
+          left = screen.left + screen.width - pref.windowWidth;
           if(left < screen.left)
             left = screen.left;
         }
       }
-      browser.windows.create({
+
+      let setting = {
         url: videoUrl,
         type: 'popup',
         top: top,
         left: left,
-        width: sizeMapping[pref.defaultSize].width,
-        height: sizeMapping[pref.defaultSize].height,
-      }).then(windowInfo => {
+        width: pref.windowWidth,
+        height: pref.windowHeight,
+      };
+      if(pref.privateBrowsing) {
+        setting.incognito = true;
+      }
+      browser.windows.create(setting).then(windowInfo => {
         windowID = windowInfo.id;
         tabID = windowInfo.tabs[0].id;
         browser.windows.update(windowID,{focused: true, top: top, left: left});

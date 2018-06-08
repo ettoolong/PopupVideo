@@ -16,7 +16,7 @@
 		"description": ""
 	},
   "defaultSize": {
-		"message": "彈出影片視窗",
+		"message": "預設影片視窗大小 - ",
 		"description": ""
 	},
   "defaultPosition": {
@@ -78,5 +78,17 @@
   "multiWindow": {
 		"message": "允許彈出一個以上的播放窗",
 		"description": ""
-  }
+	},
+	"privateBrowsing": {
+		"message": "以隱私模式開啟影片視窗",
+		"description": ""
+	},
+	"windowWidth": {
+		"message": "視窗寬度",
+		"description": ""
+	},
+	"windowHeight": {
+		"message": "視窗高度",
+		"description": ""
+	}
 }

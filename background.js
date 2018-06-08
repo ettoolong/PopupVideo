@@ -1,5 +1,4 @@
 let defaultPreference = {
-  defaultSize: 5,
   defaultPosition: 0,
   contextMenu: true,
   overlayIcon: true,
@@ -7,8 +6,23 @@ let defaultPreference = {
   alwaysTop: true,
   multiWindow: true,
   iconPosition: 2,
-  version: 2
+  privateBrowsing: false,
+  windowWidth: 560,
+  windowHeight: 320,
+  version: 3
 };
+const oldVersionSizeMapping = [
+  {width: 425, height:344},
+  {width: 480, height:385},
+  {width: 640, height:505},
+  {width: 960, height:745},
+  {width: 280, height:160},
+  {width: 560, height:320},
+  {width: 640, height:360},
+  {width: 853, height:480},
+  {width: 1280, height:745}
+];
+
 let preferences = {};
 let menuId = null;
 
@@ -50,6 +64,11 @@ const loadPreference = () => {
           needUpdate = true;
         }
       }
+      if(preferences.version<=2) {
+        update.windowWidth = oldVersionSizeMapping[preferences.defaultSize].width;
+        update.windowHeight = oldVersionSizeMapping[preferences.defaultSize].height;
+      }
+
       if(needUpdate) {
         update.version = defaultPreference.version;
         browser.storage.local.set(update).then(null, err => {});
