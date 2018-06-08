@@ -3,7 +3,7 @@
 // https://github.com/meandavejustice/min-vid/blob/master/data/icon-overlay.js - commit[0b94ede]
 
 const host = window.location.host;
-let overlayCheckInterval = setInterval(checkForEmbeds, 3000);
+let overlayCheckInterval;
 let removeIcons = false;
 let currentPrefs = {};
 let positionList = ['topCenter', 'topLeft', 'topRight'];
@@ -14,6 +14,9 @@ browser.storage.local.get().then(results => {
   }
   if (results.version) {
     currentPrefs = results;
+  }
+  if(currentPrefs.overlayIcon) {
+    overlayCheckInterval = setInterval(checkForEmbeds, 3000);
   }
 });
 
