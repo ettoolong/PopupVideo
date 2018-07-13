@@ -1,7 +1,7 @@
 {
   "title": "popup video",
   "name": "popup-video",
-  "version": "0.0.6",
+  "version": "0.0.9",
   "description": "Popup Youtube video to standalone window.",
   "main": "data/js/addon-script.js",
   "author": "ettoolong@hotmail.com",
@@ -80,5 +80,15 @@
     "title": "Use multi window",
     "value": true,
     "description": "Allow popup multi video window."
+  },
+  {
+    "name": "iconPosition",
+    "type": "menulist",
+    "title": "Overlay icon position",
+    "value": 2,
+    "options": [{"value": 0, "label": "topCenter"},
+                {"value": 1, "label": "topLeft"},
+                {"value": 2, "label": "topRight"}],
+    "description": "Set overlay icon position."
   }]
 }

@@ -21,6 +21,22 @@
     z-index: 999999;
 }
 
+.popupvideo__overlay__container.topRight {
+    border-radius: 0 0 0 4px;
+    right: 0px;
+    top: 0px;
+}
+.popupvideo__overlay__container.topLeft {
+    border-radius: 0 0 4px 0;
+    left: 0px;
+    top: 0px;
+}
+.popupvideo__overlay__container.topCenter {
+    border-radius: 0 0 4px 4px;
+    left: calc((100% - 36px)/2);
+    top: 0px;
+}
+
 .popupvideo__overlay__container:hover {
     background: rgba(255,255,255,0.9);
 }

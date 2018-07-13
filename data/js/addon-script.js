@@ -50,6 +50,8 @@ function loadPageMod () {
     contentScriptFile: data.url("js/content/icon-overlay.js"),
     onAttach: function(worker) {
       //TODO: set overlayIcon pref to page.
+      let iconPosition = pref.get(prefPath + "iconPosition");
+      worker.port.emit("setIconPosition", iconPosition);
       worker.port.on("launch", function(opts) {
         if (opts.domain.indexOf("youtube.com") > -1) {
           launchVideo(opts.url, topWindow);

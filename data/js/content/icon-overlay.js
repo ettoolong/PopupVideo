@@ -4,6 +4,8 @@
 
 const host = window.location.host;
 const overlayCheckInterval = setInterval(checkForEmbeds, 3000);
+const positionList = ['topCenter', 'topLeft', 'topRight'];
+let overlayIconPosition = 2;
 
 const hideOverlayIcons = () => {
   Array.from(document.querySelectorAll('.popupvideo__overlay__container')).forEach(el => {
@@ -30,6 +32,16 @@ self.port.on('detach', function() {
   clearInterval(overlayCheckInterval);
   Array.from(document.querySelectorAll('.popupvideo__overlay__wrapper')).forEach(removeOverlay);
 });
+
+self.port.on('setIconPosition', function (data) {
+  overlayIconPosition = data;
+  Array.from(document.querySelectorAll('.popupvideo__overlay__container')).forEach(setOverlayPosition);
+});
+
+function setOverlayPosition(el) {
+  el.classList.remove(...positionList);
+  el.classList.add(positionList[overlayIconPosition]);
+}
 
 function removeOverlay(el) {
   el.classList.remove('popupvideo__overlay__wrapper');
@@ -99,15 +111,27 @@ function dmWatchElementHandler(el) {
 function ytEmbedChecks() {
   if (!(host.indexOf('youtube.com') > -1)) return;
 
-  // YouTube Home Page
-  const ytHomeContainers = Array.from(document.querySelectorAll('#feed .yt-lockup-thumbnail'));
+  // // YouTube Home Page
+  // const ytHomeContainers = Array.from(document.querySelectorAll('#feed .yt-lockup-thumbnail'));
+  // if (ytHomeContainers.length) {
+  //   ytHomeContainers.forEach(ytHomePageHandler);
+  // }
+
+  // const ytSearchContainers = Array.from(document.querySelectorAll('#results .yt-lockup-thumbnail'));
+  // if (ytSearchContainers.length) {
+  //   ytSearchContainers.forEach(ytHomePageHandler);
+  // }
+
+  // video
+  let ytHomeContainers = Array.from(document.querySelectorAll('ytd-thumbnail'));
   if (ytHomeContainers.length) {
     ytHomeContainers.forEach(ytHomePageHandler);
   }
 
-  const ytSearchContainers = Array.from(document.querySelectorAll('#results .yt-lockup-thumbnail'));
-  if (ytSearchContainers.length) {
-    ytSearchContainers.forEach(ytHomePageHandler);
+  // YouTube Playlist
+  let ytPlaylistContainers = Array.from(document.querySelectorAll('ytd-playlist-thumbnail'));
+  if (ytPlaylistContainers.length) {
+    ytPlaylistContainers.forEach(ytPlaylistHandler);
   }
 
   // YouTube Watch Page
@@ -138,7 +162,7 @@ function ytEmbedChecks() {
 function ytHomePageHandler(el) {
   if (el.classList.contains('popupvideo__overlay__wrapper')) return;
 
-  const urlEl = el.querySelector('.yt-uix-sessionlink');
+  let urlEl = el.querySelector('a.ytd-thumbnail');
 
   if (!urlEl || !urlEl.getAttribute('href')) return;
 
@@ -149,6 +173,30 @@ function ytHomePageHandler(el) {
   el.classList.add('popupvideo__overlay__wrapper');
   const tmp = getTemplate();
   tmp.addEventListener('click', function(ev) {
+    evNoop(ev);
+    let urlEl2 = el.querySelector('a.ytd-thumbnail');
+    let url2 = urlEl2.getAttribute('href');
+    self.port.emit('launch', {
+      url: 'https://youtube.com' + url2,
+      domain: 'youtube.com'
+    });
+  });
+  el.appendChild(tmp);
+}
+
+function ytPlaylistHandler(el) {
+  if (el.classList.contains('popupvideo__overlay__wrapper')) return;
+
+  let urlEl = el.querySelector('a.ytd-playlist-thumbnail');
+  if (!urlEl || !urlEl.getAttribute('href')) return;
+
+  let url = urlEl.getAttribute('href');
+
+  if (!url.startsWith('/watch')) return;
+
+  el.classList.add('popupvideo__overlay__wrapper');
+  let tmp = getTemplate();
+  tmp.addEventListener('click', ev => {
     evNoop(ev);
     self.port.emit('launch', {
       url: 'https://youtube.com' + url,
@@ -248,14 +296,19 @@ function vimeoEmbedChecks() {
 function twitchEmbedChecks() {
   if (!(host.indexOf('twitch.tv') > -1)) return;
 
-  // twitch channel list Page & twitch video list Page
-  const twitchStreamItems = Array.from(document.querySelectorAll('.card__img'));
+  let twitchStreamItems = Array.from(document.querySelectorAll('.live-channel-card')); //TODO: Need fix
   if (twitchStreamItems.length) {
     twitchStreamItems.forEach(twitchStreamHandler);
   }
 
+  // twitch video list Page
+  let twitchVodItems = Array.from(document.querySelectorAll('div[data-a-target^="video-tower-card-"]'));
+  if (twitchVodItems.length) {
+    twitchVodItems.forEach(twitchVodHandler);
+  }
+
   // twitch Watch Page
-  const twitchWatchContainer = document.querySelector('.player');
+  let twitchWatchContainer = document.querySelector('.player');
   if (twitchWatchContainer) {
     twitchWatchHandler(twitchWatchContainer);
   }
@@ -268,35 +321,46 @@ function twitchStreamHandler(el) {
   const tmp = getTemplate();
   tmp.addEventListener('click', function(ev) {
     evNoop(ev);
-    if(el.parentNode.nodeName === 'A') {
-      let urlEl = el.parentNode;
-      if (urlEl && urlEl.getAttribute('href')) {
-        self.port.emit('launch', {
-          url: urlEl.getAttribute('href'),
-          domain: 'twitch.tv'
-        });
-      } else console.error('Error parsing url from Twitch stream list page', el); // eslint-disable-line no-console
-    } else {
-      let urlEl = el.querySelector('.js-card-thumb');
-      if (urlEl && urlEl.getAttribute('href')) {
-        self.port.emit('launch', {
-          url: 'https://www.twitch.tv' + urlEl.getAttribute('href'),
-          domain: 'twitch.tv'
-        });
-      } else console.error('Error parsing url from Twitch stream list page', el); // eslint-disable-line no-console
-    }
+    let urlEl = el.querySelector('a[data-a-target="preview-card-image-link"]');
+    if (urlEl && urlEl.getAttribute('href')) {
+      self.port.emit('launch', {
+        url: urlEl.href,
+        domain: 'twitch.tv'
+      });
+    } else console.error('Error parsing url from Twitch stream list page', el); // eslint-disable-line no-console
   });
   el.appendChild(tmp);
+}
+
+function twitchVodHandler(el) {
+  if (el.classList.contains('popupvideo__overlay__wrapper')) return;
+
+  el.classList.add('popupvideo__overlay__wrapper');
+  let thumbnail = el.querySelector('.tw-full-width');
+
+  let tmp = getTemplate();
+  tmp.addEventListener('click', ev => {
+    evNoop(ev);
+    let urlEl = el.querySelector('a[data-a-target="video-preview-card-image-link"]');
+    //let urlEl = el.parentNode;
+    if (urlEl && urlEl.getAttribute('href')) {
+      self.port.emit('launch', {
+        url: urlEl.href,
+        domain: 'twitch.tv'
+      });
+    } else console.error('Error parsing url from Twitch stream list page', el); // eslint-disable-line no-console
+  },true);
+  thumbnail.appendChild(tmp);
 }
 
 function twitchWatchHandler(el) {
   if (el.classList.contains('popupvideo__overlay__wrapper')) return;
 
   el.classList.add('popupvideo__overlay__wrapper');
-  const tmp = getTemplate();
-  tmp.addEventListener('click', function(ev) {
+  let tmp = getTemplate();
+  tmp.addEventListener('click', ev => {
     evNoop(ev);
-    const videoEl = document.querySelector('video');
+    let videoEl = document.querySelector('video');
     videoEl.pause();
     closeFullscreen();
     self.port.emit('launch', {
@@ -304,7 +368,7 @@ function twitchWatchHandler(el) {
       domain: 'twitch.tv',
       time: videoEl.currentTime
     });
-  });
+  },true);
   el.appendChild(tmp);
 }
 
@@ -314,6 +378,7 @@ function getTemplate() {
   const iconEl = document.createElement('div');
 
   containerEl.className = 'popupvideo__overlay__container';
+  containerEl.classList.add(positionList[overlayIconPosition]);
   iconEl.className = 'popupvideo__overlay__icon';
 
   containerEl.appendChild(iconEl);
