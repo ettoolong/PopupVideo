@@ -90,5 +90,33 @@
 	"windowHeight": {
 		"message": "視窗高度",
 		"description": ""
-	}
+  },
+	"screenSetting": {
+		"message": "螢幕設定 - ",
+		"description": ""
+  },
+	"screenWidth": {
+		"message": "螢幕寬度",
+		"description": ""
+  },
+	"screenHeight": {
+		"message": "螢幕高度",
+		"description": ""
+  },
+	"screenLeft": {
+		"message": "螢幕左側起點",
+		"description": ""
+  },
+	"screenTop": {
+		"message": "螢幕上方起點",
+		"description": ""
+  },
+	"autoDetect": {
+		"message": "自動偵測",
+		"description": ""
+  },
+	"resistFingerprinting": {
+		"message": "你需要暫時停用 privacy.resistFingerprinting",
+		"description": ""
+  }
 }

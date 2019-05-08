@@ -90,5 +90,33 @@
 	"windowHeight": {
 		"message": "Height",
 		"description": ""
-	}
+  },
+	"screenSetting": {
+		"message": "Screen setting - ",
+		"description": ""
+  },
+	"screenWidth": {
+		"message": "Screen width",
+		"description": ""
+  },
+	"screenHeight": {
+		"message": "Screen height",
+		"description": ""
+  },
+	"screenLeft": {
+		"message": "Screen left",
+		"description": ""
+  },
+	"screenTop": {
+		"message": "Screen top",
+		"description": ""
+  },
+	"autoDetect": {
+		"message": "Auto detect",
+		"description": ""
+  },
+  "resistFingerprinting": {
+		"message": "You need disable privacy.resistFingerprinting temporarily",
+		"description": ""
+  }
 }

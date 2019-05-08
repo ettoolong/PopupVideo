@@ -1,3 +1,4 @@
+let gscreen = window.screen;
 let defaultPreference = {
   defaultPosition: 0,
   contextMenu: true,
@@ -9,8 +10,13 @@ let defaultPreference = {
   privateBrowsing: false,
   windowWidth: 560,
   windowHeight: 320,
-  version: 3
+  screenWidth: gscreen.width || 1024,
+  screenHeight: gscreen.height || 768,
+  screenLeft: gscreen.left || 0,
+  screenTop: gscreen.top || 0,
+  version: 4
 };
+
 const oldVersionSizeMapping = [
   {width: 425, height:344},
   {width: 480, height:385},
@@ -129,7 +135,26 @@ window.addEventListener('DOMContentLoaded', event => {
 
 const messageHandler = (message, sender, sendResponse) => {
   if(message.action === 'launchVideo') {
-    launchVideo(message.url, preferences);
+    let screen = {
+      width: preferences.screenWidth,
+      height: preferences.screenHeight,
+      left: preferences.screenLeft,
+      top: preferences.screenTop
+    };
+    launchVideo(message.url, preferences, screen);
+  } else if (message.action === 'getScreenInfo') {
+    let screen = window.screen;
+    if (screen.width && screen.height) {
+      sendResponse({
+        width: screen.width,
+        height: screen.height,
+        top: screen.top,
+        left: screen.left,
+      });
+    } else {
+      sendResponse(null);
+    }
+    return true;
   }
 };
 

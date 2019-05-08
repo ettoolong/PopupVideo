@@ -12,6 +12,34 @@
 
         <div class="itemDiv">
           <div class="col">
+            <label data-l10n-id="screenSetting">Screen setting - </label>
+          </div>
+          <div class="col">
+            <div>
+              <label for="screenWidth" data-l10n-id="screenWidth">Screen width</label>
+              <input type="number" min="1" id="screenWidth">
+            </div>
+            <div style="margin-top: 2px;">
+              <label for="screenHeight" data-l10n-id="screenHeight">Screen height</label>
+              <input type="number" min="1" id="screenHeight">
+            </div>
+            <div style="margin-top: 2px;">
+              <label for="screenLeft" data-l10n-id="screenLeft">Screen left</label>
+              <input type="number" min="0" id="screenLeft">
+            </div>
+            <div style="margin-top: 2px;">
+              <label for="screenTop" data-l10n-id="screenTop">Screen top</label>
+              <input type="number" min="0" id="screenTop">
+            </div>
+            <div style="margin-top: 2px;">
+              <button id="autoDetect" data-l10n-id="autoDetect">Auto detect</button>
+              <label id='resistFingerprinting' style="display: none; color: #F00" data-l10n-id="resistFingerprinting">You need disable privacy.resistFingerprinting temporarily</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="itemDiv">
+          <div class="col">
             <label data-l10n-id="defaultSize">Default video window size - </label>
           </div>
           <div class="col">

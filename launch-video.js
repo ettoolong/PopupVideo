@@ -1,7 +1,7 @@
 let windowID = null;
 let tabID = null;
 
-const launchVideo = (url, pref) => {
+const launchVideo = (url, pref, screen) => {
   let getUrlFn = {
     "videoUrl": (url, type, cb) => { return cb(null, url); },
     "vimeo": getVimeoUrl,
@@ -14,7 +14,6 @@ const launchVideo = (url, pref) => {
   //({changed: 'activate', domain: 'vimeo.com'});
   getUrlFn[domain](id, type, (err, videoUrl) => {
     if(pref.multiWindow || (!pref.multiWindow && windowID === null)) {
-      let screen = window.screen;
       let top = screen.top;
       let left = screen.left;
       if (pref.defaultPosition === 0) {
@@ -48,7 +47,13 @@ const launchVideo = (url, pref) => {
       browser.windows.create(setting).then(windowInfo => {
         windowID = windowInfo.id;
         tabID = windowInfo.tabs[0].id;
-        browser.windows.update(windowID,{focused: true, top: top, left: left});
+        browser.windows.update(windowID,{
+          focused: true,
+          top: top,
+          left: left,
+          width: pref.windowWidth,
+          height: pref.windowHeight
+        });
       });
     }
     else {
@@ -88,6 +93,8 @@ browser.runtime.onMessage.addListener( (message, sender, sendResponse) => {
   if(message.action === 'init') {
     if(sender.tab.id === tabID && sender.tab.windowId === windowID) {
       sendResponse({action: 'removeIcons'});
+    } else {
+      sendResponse({});
     }
   }
 });

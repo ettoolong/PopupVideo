@@ -50,6 +50,12 @@ const setValueToElem = (id, value) => {
   }
 };
 
+const getScreenInfo = (callback) => {
+  browser.runtime.sendMessage({action: 'getScreenInfo'}).then( response => {
+    callback(response);
+  }, error => {});
+}
+
 const init = preferences => {
   currentPrefs = preferences;
   for(let p in preferences) {
@@ -59,6 +65,25 @@ const init = preferences => {
   let l10nTags = Array.from(document.querySelectorAll('[data-l10n-id]'));
   l10nTags.forEach(tag => {
     tag.textContent = browser.i18n.getMessage(tag.getAttribute('data-l10n-id'));
+  });
+  getScreenInfo(response => {
+    if (!response) {
+      document.getElementById('resistFingerprinting').style.display = 'block';
+    }
+  })
+  document.getElementById('autoDetect').addEventListener('click', event => {
+    getScreenInfo(response => {
+      if (response) {
+        document.getElementById('screenWidth').value = response.width;
+        document.getElementById('screenHeight').value = response.height;
+        document.getElementById('screenLeft').value = response.left;
+        document.getElementById('screenTop').value = response.top;
+        saveToPreference('screenWidth', response.width);
+        saveToPreference('screenHeight', response.height);
+        saveToPreference('screenLeft', response.left);
+        saveToPreference('screenTop', response.top);
+      }
+    });
   });
 };
 
