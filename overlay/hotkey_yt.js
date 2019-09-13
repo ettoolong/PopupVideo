@@ -1,10 +1,14 @@
 if(window === window.top) {
   const shortcutFuncs = {
     togglePlay: function(v){
-      if(v.paused)
-        v.play();
-      else
-        v.pause();
+      if(v.hasAttribute('src')) {
+        if(v.paused)
+          v.play();
+        else
+          v.pause();
+      } else {
+        document.querySelector('.ytp-large-play-button').click();
+      }
     },
 
     toStart: function(v){
