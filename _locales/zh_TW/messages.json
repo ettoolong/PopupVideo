@@ -80,7 +80,7 @@
 		"description": ""
 	},
 	"privateBrowsing": {
-		"message": "以隱私模式開啟影片視窗",
+		"message": "以隱私模式開啟影片視窗 (為啟用此功能，你需要允許套件在隱私視窗中執行)",
 		"description": ""
 	},
 	"windowWidth": {

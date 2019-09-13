@@ -2,7 +2,7 @@
   "description": "__MSG_extDescription__",
   "manifest_version": 2,
   "name": "__MSG_extName__",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "homepage_url": "https://github.com/ettoolong/PopupVideo",
   "icons": {
     "16": "icon/logo.svg",
@@ -11,16 +11,13 @@
     "64": "icon/logo.svg",
     "96": "icon/logo.svg"
   },
-  "applications": {
+  "browser_specific_settings": {
     "gecko": {
       "id": "PopupVideoWebExt@ettoolong",
-      "strict_min_version": "51.0"
+      "strict_min_version": "57.0"
     }
   },
-  "developer": {
-    "name": "Ett Chung",
-    "url": "https://addons.mozilla.org/zh-TW/firefox/user/ett-chung/"
-  },
+  "author": "Ett Chung",
   "background": {
     "scripts": ["background.js",
                 "launch-video.js",
@@ -33,6 +30,11 @@
                 "lib/get-dailymotion-url.js"]
   },
   "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/embed/*"],
+      "js": ["overlay/hotkey_yt.js"],
+      "run_at": "document_start"
+    },
     {
       "matches": ["*://*.youtube.com/*"],
       "js": ["overlay/overlay_yt.js", "overlay/icon-overlay.js"],

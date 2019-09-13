@@ -80,7 +80,7 @@
 		"description": ""
   },
 	"privateBrowsing": {
-		"message": "Open popup window in private browsing",
+		"message": "Open popup window in private browsing (For this feature, you need enabling extensions in private windows)",
 		"description": ""
 	},
 	"windowWidth": {
